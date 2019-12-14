@@ -5,6 +5,11 @@ GENESIS_HASH_FILE=${JORMUNGAND_USER_HOME}etc/genesis-hash.txt
 NODE_CONFIG_FILE=${JORMUNGAND_USER_HOME}etc/node_config.yaml
 NODE_SECRET_FILE=${JORMUNGAND_USER_HOME}etc/secrets/node_secret.yaml
 
+function preExitHook () {
+  exec "$@"
+  echo 'Exiting...'
+}
+
 function setPublicIPvariable () {
   case $1 in
     IPv4)
@@ -30,7 +35,8 @@ if [[ -z ${PUBLIC_IPV4} ]]; then
     setPublicIPvariable "IPv4"
     let "counter++"
     if [[ -z ${PUBLIC_IPV4} ]] && [[ $counter -eq 10 ]]; then
-      echo "Failed to obtain public IPv4 address; exiting..."
+      echo "Failed to obtain public IPv4 address!"
+      preExitHook "$@"
       exit
     fi
   done
@@ -61,6 +67,7 @@ echo 'Public IPv6 address is:' ${PUBLIC_IPV6}
 
 if [[ ! -f ${GENESIS_HASH_FILE} ]]; then
   echo 'Genesis hash file does not exist! Jormungandr can NOT start!!!'
+  preExitHook "$@"
   exit
 else
   GENESIS_HASH=$(cat ${GENESIS_HASH_FILE})
@@ -69,6 +76,7 @@ fi
 
 if [[ ! -f ${NODE_CONFIG_FILE} ]]; then
   echo 'Jormungandr node config file does not exists! Jormungandr can NOT start!!!'
+  preExitHook "$@"
   exit
 else
   if [[ ! -f ${NODE_SECRET_FILE} ]]; then
