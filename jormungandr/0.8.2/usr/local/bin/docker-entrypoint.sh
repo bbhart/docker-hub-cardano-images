@@ -25,7 +25,7 @@ function setPublicIPvariable () {
 
 if [[ -z ${PUBLIC_IPV4} ]]; then
   counter=1
-  while [[ -z ${PUBLIC_IPV4} ]] && [[ $counter -lt 10 ]]; do
+  while [[ -z ${PUBLIC_IPV4} ]] && [[ $counter -lt 11 ]]; do
     echo 'Public IPv4 IP address not set! Trying again... (' $counter '/10)'
     setPublicIPvariable "IPv4"
     let "counter++"
@@ -38,7 +38,7 @@ fi
 
 if [[ -z ${PUBLIC_IPV6} ]]; then
   counter=1
-  while [[ -z ${PUBLIC_IPV6} ]] && [[ $counter -lt 10 ]]; do
+  while [[ -z ${PUBLIC_IPV6} ]] && [[ $counter -lt 11 ]]; do
     echo 'Public IPv6 IP address not set! Trying again... (' $counter '/10)'
     setPublicIPvariable "IPv6"
     let "counter++"
