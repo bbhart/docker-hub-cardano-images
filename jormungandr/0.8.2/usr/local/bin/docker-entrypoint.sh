@@ -30,7 +30,7 @@ if [[ -z ${PUBLIC_IPV4} ]]; then
     setPublicIPvariable "IPv4"
     let "counter++"
     if [[ -z ${PUBLIC_IPV4} ]] && [[ $counter -eq 10 ]]; then
-      echo "Failed to obtain public IPv4; exiting..."
+      echo "Failed to obtain public IPv4 address; exiting..."
       exit
     fi
   done
@@ -43,7 +43,7 @@ if [[ -z ${PUBLIC_IPV6} ]]; then
     setPublicIPvariable "IPv6"
     let "counter++"
     if [[ -z ${PUBLIC_IPV6} ]] && [[ $counter -eq 10 ]]; then
-      echo "Failed to obtain public IPv6; continuing..."
+      echo "Failed to obtain public IPv6 address; continuing..."
     fi
   done
 fi
