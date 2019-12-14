@@ -60,7 +60,7 @@ echo 'Public IPv4 address is:' ${PUBLIC_IPV4}
 echo 'Public IPv6 address is:' ${PUBLIC_IPV6}
 
 if [[ ! -f ${GENESIS_HASH_FILE} ]]; then
-  echo 'Genesis hash file does not exists! Jormungandr can NOT start!!!'
+  echo 'Genesis hash file does not exist! Jormungandr can NOT start!!!'
   exit
 else
   GENESIS_HASH=$(cat ${GENESIS_HASH_FILE})
@@ -71,16 +71,17 @@ if [[ ! -f ${NODE_CONFIG_FILE} ]]; then
   echo 'Jormungandr node config file does not exists! Jormungandr can NOT start!!!'
   exit
 else
-  if [[ -f ${NODE_SECRET_FILE} ]]; then
-    echo 'Jormungand node secret file found! Jormungandr will start as a slot leader!'
+  if [[ ! -f ${NODE_SECRET_FILE} ]]; then
+    echo "Jormungandr node secret file not found! Jormungandr will start in a passive mode!"
+    jormungandr \
+      --genesis-block-hash ${GENESIS_HASH} \
+      --config ${NODE_CONFIG_FILE}
+  else
+    echo 'Jormungand node secret file found! Jormungandr will start in a slot leader mode!'
     jormungandr \
       --genesis-block-hash ${GENESIS_HASH} \
       --config ${NODE_CONFIG_FILE} \
       --secret ${NODE_SECRET_FILE}
-  else
-    jormungandr \
-      --genesis-block-hash ${GENESIS_HASH} \
-      --config ${NODE_CONFIG_FILE}
   fi
 fi
 
