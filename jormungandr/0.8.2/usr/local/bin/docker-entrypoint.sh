@@ -15,11 +15,15 @@ function setPublicIPvariable () {
     IPv4)
       if PUBLIC_IPV4=$(curl --proto '=https' --tlsv1.2 -sSf --ipv4 https://ifconfig.co/); then
         export PUBLIC_IPV4=${PUBLIC_IPV4}
+      else
+        echo "Autodetect faied!"
       fi
     ;;
     IPv6)
       if PUBLIC_IPV6=$(curl --proto '=https' --tlsv1.2 -sSf --ipv6 https://ifconfig.co/); then
         export PUBLIC_IPV6=${PUBLIC_IPV6}
+      else
+        echo "Autodetect faied!"
       fi
     ;;
     all)
@@ -31,7 +35,7 @@ function setPublicIPvariable () {
 if [[ -z ${PUBLIC_IPV4} ]]; then
   counter=1
   while [[ -z ${PUBLIC_IPV4} ]] && [[ $counter -lt 11 ]]; do
-    echo 'Public IPv4 IP address not set! Trying again... (' $counter '/10)'
+    echo 'Public IPv4 IP address not set! Trying autodetect... (' $counter '/10)'
     setPublicIPvariable "IPv4"
     let "counter++"
     if [[ -z ${PUBLIC_IPV4} ]] && [[ $counter -eq 10 ]]; then
@@ -45,7 +49,7 @@ fi
 if [[ -z ${PUBLIC_IPV6} ]]; then
   counter=1
   while [[ -z ${PUBLIC_IPV6} ]] && [[ $counter -lt 11 ]]; do
-    echo 'Public IPv6 IP address not set! Trying again... (' $counter '/10)'
+    echo 'Public IPv6 IP address not set! Trying autodetect... (' $counter '/10)'
     setPublicIPvariable "IPv6"
     let "counter++"
     if [[ -z ${PUBLIC_IPV6} ]] && [[ $counter -eq 10 ]]; then
